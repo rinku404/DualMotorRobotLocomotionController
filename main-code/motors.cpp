@@ -121,9 +121,19 @@ void motor::UpdatePWM(int pwm)
 void motor::UpdateSpeed(uint32_t deltaT)
 {
     pulses_current_loop = encoder.getCount();
+
+    if(pulses_current_loop >= 10000 || deltaT < 0)
+    {
+        pulses_current_loop = 0;
+        pulses_last_loop = 0;
+        encoder.clearCount();
+
+        return;
+    }
+
     //rad/s
     speed =
-        (((2*PI / (float)pulses_per_turn)*(float)(pulses_current_loop - pulses_last_loop))) / (float)(deltaT / 1.0e3);
+        (((2*PI / (float)pulses_per_turn)*(float)(pulses_current_loop - pulses_last_loop))) / (float)(deltaT / 1.0e6);
     
     pulses_last_loop = pulses_current_loop;
 }

@@ -7,6 +7,9 @@
 
 #include "motors.h"
 
+uint32_t last_timestamp = 0;
+uint32_t current_timestamp = 0;
+
 ledc_timer_config_t pwm_timer;
 
 motor motor_r(13, 25, //int pin_pwm_left_, int pin_pwm_right_,
@@ -15,6 +18,23 @@ motor motor_r(13, 25, //int pin_pwm_left_, int pin_pwm_right_,
               &pwm_timer,      //ledc_timer_config_t* pwm_timer_,
               LEDC_CHANNEL_0,  //ledc_channel_t pwm_channel_left_,
               LEDC_CHANNEL_1); //ledc_channel_t pwm_channel_right_);
+              
+float sentido = 1;
+
+void UpdateMotor_r(TimerHandle_t xTimer)
+{
+    current_timestamp = micros();
+
+    motor_r.UpdatePWM(sentido*8095);
+    motor_r.UpdateSpeed(current_timestamp - last_timestamp);
+
+    //printf("%d\n", (int)(current_timestamp - last_timestamp));
+
+    printf("%.4f, %.4f\n", 8.4*sentido, motor_r.GetSpeed());
+
+
+    last_timestamp = current_timestamp;
+}
 
 void setup(){
 
@@ -24,18 +44,16 @@ void setup(){
     pwm_timer.freq_hz = 5000;
 
 	ESP_ERROR_CHECK(ledc_timer_config(&pwm_timer));
+
+    TimerHandle_t motor_tmr = xTimerCreate("motorTimer", pdMS_TO_TICKS(50), pdTRUE, ( void * )1, &UpdateMotor_r);
+    if( xTimerStart(motor_tmr, 10 ) != pdPASS ) {
+        printf("Motor Timer start error");
+    }
 }
 
 void loop(){
-
-    //for(int i = 0; i < 8095; i += 100)
-    //{
-        printf("%f\n", motor_r.GetSpeed());
-
-        motor_r.UpdatePWM(8095);
-        motor_r.UpdateSpeed(10);
-
-        delay(10);
-    //}
-
+    sentido = 1;
+    delay(1000);
+    sentido = -1;
+    delay(1000);
 }

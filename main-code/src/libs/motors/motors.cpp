@@ -133,7 +133,7 @@ void motor::UpdateSpeed(uint32_t deltaT)
 
     //rad/s
     speed =
-        (((2*PI / (float)pulses_per_turn)*(float)(pulses_current_loop - pulses_last_loop))) / (float)(deltaT / 1.0e6);
+        (((2*PI / (float)pulses_per_turn)*(float)(pulses_current_loop - pulses_last_loop))) / (float)(deltaT / 1.0e3);
     
     pulses_last_loop = pulses_current_loop;
 }
@@ -141,4 +141,9 @@ void motor::UpdateSpeed(uint32_t deltaT)
 float motor::GetSpeed()
 {
     return speed;
+}
+
+float motor::GetPWMMax()
+{
+    return pwm_max_value;
 }

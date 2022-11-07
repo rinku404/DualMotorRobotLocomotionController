@@ -4,7 +4,7 @@
 #include "esp_err.h"
 #include "driver/ledc.h"
 
-#include "src/libs/ESP32Encoder/ESP32Encoder.h"
+#include "../ESP32Encoder/ESP32Encoder.h"
 
 class motor
 {
@@ -42,11 +42,14 @@ public:
     
     ~motor();
 
+    float target_speed;
+
     void  SetupEncoder();
     void  SetupPWM();
     void  UpdatePWM(int pwm);
     void  UpdateSpeed(uint32_t deltaT);
     float GetSpeed();
+    float GetPWMMax();
 };
 
 

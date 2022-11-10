@@ -2,7 +2,10 @@
 
 #include "src/libs/SparkFun_MPU-9250-DMP/SparkFunMPU9250-DMP.h"
 
-MPU9250_DMP imu;
+static MPU9250_DMP imu;
+
+static float gyroZ;
+
 
 void IMUStart(void)
 {
@@ -15,12 +18,12 @@ void IMUStart(void)
     }
   }
   
-  imu.dmpBegin(DMP_FEATURE_6X_LP_QUAT | // Enable 6-axis quat
-               DMP_FEATURE_GYRO_CAL, // Use gyro calibration
-              10); // Set DMP FIFO rate to 10 Hz
-  // DMP_FEATURE_LP_QUAT can also be used. It uses the 
-  // accelerometer in low-power mode to estimate quat's.
-  // DMP_FEATURE_LP_QUAT and 6X_LP_QUAT are mutually exclusive
+  imu.setSensors(INV_XYZ_GYRO); // Enable gyroscope only
+  imu.setGyroFSR(2000); // Set gyro to 2000 dps
+
+  imu.dmpBegin(DMP_FEATURE_GYRO_CAL |   // Enable gyro cal
+              DMP_FEATURE_SEND_CAL_GYRO,// Send cal'd gyro values
+              10); 
 }
 
 void IMUUpdate(void)
@@ -31,14 +34,12 @@ void IMUUpdate(void)
     // Use dmpUpdateFifo to update the ax, gx, mx, etc. values
     if ( imu.dmpUpdateFifo() == INV_SUCCESS)
     {
-      // computeEulerAngles can be used -- after updating the
-      // quaternion values -- to estimate roll, pitch, and yaw
-      imu.computeEulerAngles();
+      gyroZ = imu.calcGyro(imu.gz);
     }
   }
 }
 
 float IMUGetYaw(void)
 {
-    return imu.yaw;
+    return gyroZ;
 }

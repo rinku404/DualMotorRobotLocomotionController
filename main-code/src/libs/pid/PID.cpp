@@ -40,7 +40,11 @@ void PID::SetTarget(float target_)
 void PID::Update(uint32_t time_step, float current_read)
 {
     error = target - current_read;
+    
+    if(output < 1 && output > -1)
     integral = integral + (error * time_step);
+    
+    
     derivative = (error - last_error) / time_step;
 
     last_error = error;
@@ -48,6 +52,8 @@ void PID::Update(uint32_t time_step, float current_read)
     output = kp*error + ki*integral + kd*derivative;
 
     output /= 1000;
+
+    if(current_read == 0) integral = 0;
 
     // printf("error: %.3f ", error);
     // printf("integral: %.3f ", integral);

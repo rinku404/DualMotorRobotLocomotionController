@@ -4,15 +4,21 @@
 #include "motors_manager.h"
 #include "imu_manager.h"
 #include "espnow_manager.h"
+#include "direction_manager.h"
+
+static float target_speed = 3500;
+static float max_pwm = 7000;
 
 void setup()
 {
-    // InitializeMotors();
-    //StartReverseRightMotorRoutine(10, 8095, 1000);
-    //StartReverseLeftMotorRoutine(10, 8095, 1000);
+    /**/
+    InitializeMotors();
+    
+    //StartReverseRightMotorRoutine(10, 4000, 1000);
+    //StartReverseLeftMotorRoutine(10, 4000, 1000);
 
-    // SetMotorRightTargetSpeed(3500);
-    // SetMotorLeftTargetSpeed(3500);
+    //SetMotorRightTargetSpeed(target_speed);
+    //SetMotorLeftTargetSpeed(target_speed);
 
     //Coloca um delay entre os starts dos PIDs pras tarefas não ficarem se batendo
     //StartPIDRightMotor(10);
@@ -20,17 +26,33 @@ void setup()
     //StartPIDLeftMotor(10);
 
     IMUStart();
-    //ESPNowStart();
+    //ESPNowStartSender();
+
+    //StartDirectionTestRoutine(50, target_speed, 2000);
+    //StartDirectionTestRoutine(50, max_pwm, 2000);
+    PIDDirectionSetTargetRotation(0);
+    PIDDirectionSetPWM(7000);
+    StartPIDDirection(50);
+    //SetMotorLeftPWM(7000);
+    //SetMotorRightPWM(7000);
+    //ApplyTurnDirection(7000, 0);
+    /**/
+
+    /**/
+    //ESPNowStartReceiver();
+    /**/
+
 }
 
 void loop()
 {
-    // printf("%.3f, %.3f, %.3f\n", 3500.0f, GetMotorRightSpeed(), GetMotorLeftSpeed());
+    //printf("%.3f, %.3f, %.3f\n", target_speed, GetMotorLeftSpeed(), GetMotorRightSpeed());
+    
 
-    IMUUpdate();
-    printf("%.3f\n", IMUGetYaw());
+    //IMUUpdate();
+    //printf("%.3f\n", IMUGetYaw());
 
-    delay(10);
+    //delay(10);
 
     /*
     printf("%.3f\n", IMUGetYaw());

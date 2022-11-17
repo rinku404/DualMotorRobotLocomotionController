@@ -1,9 +1,8 @@
 #ifndef ESPNOW_MANAGER_H
 #define ESPNOW_MANAGER_H
 
-#include "espnow_msg.h"
-
-void ESPNowStart(void);
-void ESPNowSend(espnow_msg_t* msg);
+void ESPNowStartSender(void);
+void ESPNowStartReceiver(void);
+void ESPNowSend(char* msg);
 
 #endif

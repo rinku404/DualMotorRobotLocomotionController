@@ -11,10 +11,10 @@
 #include "src/libs/pid/PID.h"
 
 //id tmrs
-int id_tmr_reverse_motor_right = 1;
-int id_tmr_reverse_motor_sig_right = 2;
-int id_tmr_reverse_motor_left = 3;
-int id_tmr_reverse_motor_sig_left = 4;
+static int id_tmr_reverse_motor_right = 1;
+static int id_tmr_reverse_motor_sig_right = 2;
+static int id_tmr_reverse_motor_left = 3;
+static int id_tmr_reverse_motor_sig_left = 4;
 
 typedef struct
 {
@@ -177,8 +177,6 @@ void StartPIDLeftMotor(uint32_t time_step)
 }
 
 //
-
-
 float GetMotorRightSpeed(void)
 {
     return motor_right.GetSpeed();
@@ -187,4 +185,24 @@ float GetMotorRightSpeed(void)
 float GetMotorLeftSpeed(void)
 {
     return motor_left.GetSpeed();
+}
+
+float GetMotorRightTargetSpeed(void)
+{
+    return pid_motor_right.GetTarget();
+}
+
+float GetMotorLeftTargetSpeed(void)
+{
+    return pid_motor_left.GetTarget();
+}
+
+void SetMotorRightPWM(int pwm)
+{
+    motor_right.UpdatePWM(pwm);
+}
+
+void SetMotorLeftPWM(int pwm)
+{
+    motor_left.UpdatePWM(pwm);
 }

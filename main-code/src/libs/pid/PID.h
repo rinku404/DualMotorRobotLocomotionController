@@ -14,10 +14,16 @@ private:
     float integral;
     float derivative;
 
-    float last_error;
-
     float target;
     float output;
+
+
+    float last_error;
+    float last_output;
+    float last_read;
+    float last_target;
+
+
 
     uint32_t time_step;
 
@@ -28,6 +34,7 @@ public:
     void        SetTime_step(uint32_t time_step_);
     uint32_t    GetTime_step(void);
     void        SetTarget(float target_);
+    float       GetTarget(void);
     void        Update(uint32_t time_step, float current_read);
     float       GetOutput();
 };

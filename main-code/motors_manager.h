@@ -12,5 +12,9 @@ void  StartPIDRightMotor(uint32_t time_step);
 void  StartPIDLeftMotor(uint32_t time_step);
 float GetMotorRightSpeed(void);
 float GetMotorLeftSpeed(void);
+float GetMotorRightTargetSpeed(void);
+float GetMotorLeftTargetSpeed(void);
+void SetMotorRightPWM(int pwm);
+void SetMotorLeftPWM(int pwm);
 
 #endif

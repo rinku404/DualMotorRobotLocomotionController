@@ -88,11 +88,13 @@ void PID::Update(uint32_t time_step, float current_read)
     last_target = target;
     last_read = current_read;
 
+    /*
     printf("error: %.3f ", error);
     printf("integral: %.3f ", integral);
     printf("derivative: %.3f ", derivative);
     printf("output: %.3f ", output);
     printf("\n");
+    */
 }
 
 float PID::GetOutput(void)
